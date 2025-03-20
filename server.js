@@ -3,7 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db.js");
-
+const authRoutes = require("./routes/authRoute.js");
 // Connect db
 connectDb();
 
@@ -17,9 +17,11 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 app.use(express.json());
 
-const PORT = process.env.PORT || 8000;
+// Route
+app.use("/api/v1/auth", authRoutes);
 
+// Start server
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
