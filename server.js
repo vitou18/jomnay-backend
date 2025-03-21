@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db.js");
 const authRoutes = require("./routes/authRoute.js");
+const path = require("path");
+
 // Connect db
 connectDb();
 
@@ -21,6 +23,9 @@ app.use(express.json());
 
 // Route
 app.use("/api/v1/auth", authRoutes);
+
+// upload
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Start server
 const PORT = process.env.PORT || 8000;
