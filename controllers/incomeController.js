@@ -38,3 +38,14 @@ exports.getAllIncome = async (req, res) => {
     res.status(500).json({ message: "Error getting income" });
   }
 };
+
+// delete income
+exports.deleteIncome = async (req, res) => {
+  try {
+    await Income.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: "Income deleted successfully" });
+  } catch (e) {
+    res.status(500).json({ message: "Error deleting income" });
+  }
+};
