@@ -1,4 +1,5 @@
 const Income = require("../models/Income.js");
+const xlsx = require("xlsx");
 
 // add Income
 exports.addIncome = async (req, res) => {
@@ -80,5 +81,31 @@ exports.editIncome = async (req, res) => {
     res.status(200).json(updateIncome);
   } catch (e) {
     res.status(500).json({ message: "Error updating income" });
+  }
+};
+
+// download income
+exports.downloadIncome = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const income = await Income.find({ userId }).sort({ date: -1 });
+
+    // Prepare data for excel
+    const data = income.map((item) => ({
+      Source: item.source,
+      Amount: item.amount,
+      Date: item.date,
+    }));
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(data);
+
+    xlsx.utils.book_append_sheet(wb, ws, "Income");
+    xlsx.writeFile(wb, "income_details.xlsx");
+
+    res.download("income_details.xlsx");
+  } catch (e) {
+    res.status(500).json({ message: "Server Error" });
   }
 };
