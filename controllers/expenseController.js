@@ -23,3 +23,16 @@ exports.addExpense = async (req, res) => {
     res.status(500).json({ message: "Error adding expense" });
   }
 };
+
+// get all expenses
+exports.getAllExpenses = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const expense = await Expense.find({ userId }).sort({ date: -1 });
+
+    res.status(200).json(expense);
+  } catch (e) {
+    res.status(500).json({ message: "Error getting expenses" });
+  }
+};
