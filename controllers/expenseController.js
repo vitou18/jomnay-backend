@@ -49,3 +49,35 @@ exports.deleteExpense = async (req, res) => {
     res.status(500).json({ message: "Error deleting expense" });
   }
 };
+
+// edit expense
+
+exports.editExpense = async (req, res) => {
+  const id = req.params.id;
+  const { amount, date, category } = req.body;
+
+  if (!amount || !date || !category)
+    return res
+      .status(400)
+      .json({ message: "At least one field needs to be updated" });
+
+  try {
+    const updatedExpense = await Expense.findByIdAndUpdate(
+      id,
+      {
+        category,
+        amount,
+        date: new Date(date),
+      },
+      { new: true }
+    );
+
+    if (!updatedExpense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    res.status(200).json(updatedExpense);
+  } catch (e) {
+    res.status(500).json({ message: "Error updating expense" });
+  }
+};
