@@ -49,3 +49,36 @@ exports.deleteIncome = async (req, res) => {
     res.status(500).json({ message: "Error deleting income" });
   }
 };
+
+// edit income
+exports.editIncome = async (req, res) => {
+  try {
+    const { source, amount, date } = req.body;
+
+    if (!source || !amount || !date) {
+      return res
+        .status(400)
+        .json({ message: "At least one field needs to be updated" });
+    }
+
+    const id = req.params.id;
+
+    const updateIncome = await Income.findByIdAndUpdate(
+      id,
+      {
+        source,
+        amount,
+        date: new Date(date),
+      },
+      { new: true }
+    );
+
+    if (!updateIncome) {
+      return res.status(404).json({ message: "Income not found" });
+    }
+
+    res.status(200).json(updateIncome);
+  } catch (e) {
+    res.status(500).json({ message: "Error updating income" });
+  }
+};
