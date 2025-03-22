@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/db.js");
 const authRoutes = require("./routes/authRoute.js");
+const incomeRoute = require("./routes/incomeRoute.js");
 const path = require("path");
 
 // Connect db
@@ -23,6 +24,7 @@ app.use(express.json());
 
 // Route
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/income", incomeRoute);
 
 // upload
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
