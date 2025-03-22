@@ -25,3 +25,16 @@ exports.addIncome = async (req, res) => {
     res.status(500).json({ message: "Error adding income" });
   }
 };
+
+// get all Income
+exports.getAllIncome = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const income = await Income.find({ userId }).sort({ date: -1 });
+
+    res.status(200).json(income);
+  } catch (e) {
+    res.status(500).json({ message: "Error getting income" });
+  }
+};
