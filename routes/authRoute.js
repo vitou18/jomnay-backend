@@ -11,7 +11,58 @@ const upload = require("../middlewares/uploadMiddleware.js");
 const router = express.Router();
 
 // Auth routes
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Logged in successfully
+ *       401:
+ *         description: Invalid credentials
+ */
 router.post("/login", loginUser);
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: User Register
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               profileUrl:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Registered in successfully
+ *       401:
+ *         description: Invalid credentials
+ */
 router.post("/register", registerUser);
 router.get("/profile", protect, getProfile);
 
